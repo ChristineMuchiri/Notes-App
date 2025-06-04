@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: A SAM template for a notes App.
+
+Globals:
+  Function:
+    Runtime: python 3.12
+    Timeout: 10
+    Handler: lambda_handler
+    MemorySize: 128
+
+Resources:
+  NotesTable:
+  Type: AWS::Dynamo::Table
+  Properties:
+    TableName: NotesTable
+    AttributeDefinitions:
+      - AttributeName: noteId
+        AttributeType: S
+    KeySchema:
+      - AttributeName: noteId
+        KeyType: HASH
+    BillingMode: PAY_PER_REQUEST
+
+  CreateNoteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: CreateNote-Function
+      CodeUri: .   #path to function
+      Handler: create_note.lambda_handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: NotesTable
+      Events:
+        CreateNoteAPI:
+          Type: Api
+          Properties:
+            Path: /notes
+            Method: POST
+          
+  GetNoteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: get_note.lambda_handler
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: NotesTable
+      Events:
+        GetNoteAPI:
+          Type: Api
+          Properties:
+            Path: /notes/{id}
+            Method: GET
+      
+    
+
+  
+
