@@ -25,9 +25,8 @@ Resources:
   CreateNoteFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: CreateNote-Function
-      CodeUri: .   #path to function
       Handler: create_note.lambda_handler
+      CodeUri: .   #path to function
       Policies:
         - DynamoDBCrudPolicy:
             TableName: NotesTable
@@ -37,12 +36,15 @@ Resources:
           Properties:
             Path: /notes
             Method: POST
+      Environment:
+        Variables:
+          TABLE_NAME: NotesTable
           
   GetNoteFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: .
       Handler: get_note.lambda_handler
+      CodeUri: .
       Policies:
         - DynamoDBReadPolicy:
             TableName: NotesTable
@@ -52,6 +54,9 @@ Resources:
           Properties:
             Path: /notes/{id}
             Method: GET
+      Environment:
+        Variables:
+          TABLE_NAME: NotesTable
       
     
 
