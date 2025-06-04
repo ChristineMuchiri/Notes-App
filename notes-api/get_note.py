@@ -1,7 +1,7 @@
 import json
 import boto3
 
-dynamodb = boto3.resource('dynamodbb')
+dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('NotesTable')
 
 def lambda_handler(event, context):
