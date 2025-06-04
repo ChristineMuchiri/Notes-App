@@ -11,16 +11,16 @@ Globals:
 
 Resources:
   NotesTable:
-  Type: AWS::DynamoDB::Table
-  Properties:
-    TableName: NotesTable
-    AttributeDefinitions:
-      - AttributeName: noteId
-        AttributeType: S
-    KeySchema:
-      - AttributeName: noteId
-        KeyType: HASH
-    BillingMode: PAY_PER_REQUEST
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: NotesTable
+      AttributeDefinitions:
+        - AttributeName: noteId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: noteId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
 
   CreateNoteFunction:
     Type: AWS::Serverless::Function
@@ -35,7 +35,7 @@ Resources:
           Type: Api
           Properties:
             Path: /notes
-            Method: POST
+            Method: post
       Environment:
         Variables:
           TABLE_NAME: NotesTable
@@ -53,7 +53,7 @@ Resources:
           Type: Api
           Properties:
             Path: /notes/{id}
-            Method: GET
+            Method: get
       Environment:
         Variables:
           TABLE_NAME: NotesTable
